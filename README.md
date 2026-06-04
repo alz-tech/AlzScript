@@ -23,13 +23,13 @@ That's it. You're ready.
 ## Run a file
 
 ```bash
-alz myapp.alz
+alz myapp.js
 ```
 
 Or with the explicit keyword:
 
 ```bash
-alz run myapp.alz
+alz  myapp.js
 ```
 
 ---
@@ -55,7 +55,8 @@ alz › exit
 
 ```bash
 alz build myapp.alz    # compile to myapp.js
-alz check myapp.alz    # check for errors without runningalz version            # show version
+alz check myapp.alz    # check for errors without running
+alz version            # show version
 alz help               # show help
 ```
 
