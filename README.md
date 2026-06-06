@@ -1,258 +1,467 @@
-AlzScript — A beginner-friendly programming language that reads like English. Transpiles to JavaScript. Runs on Node.js.
+# AlzScript
 
-> Write plain English. Runs on Node.js.
+**A programming language that reads like English. Simpler than Python. Runs on Node.js.**
+
+```js
+name = "World"
+print "Hello, {name}!"
+```
 
 ---
 
-## Install
+## Installation
 
 ```bash
 npm install -g alzjs
 ```
 
-The command you use is just `alz`.
-
-```bash
-alz version
-```
-
-That's it. You're ready.
+**Requirements:** Node.js 18 or higher
 
 ---
 
-## Run a file
+## Quick Start
 
-```bash
-alz myapp.js
+Create a file `hello.js`:
+
+```js
+name = ask "What is your name? "
+print "Hello, {name}!"
 ```
 
-Or with the explicit keyword:
+Run it:
 
 ```bash
-alz  myapp.js
+alz hello.js
 ```
 
 ---
 
-## Interactive shell
-
-```bash
-alz
-```
-
-Opens the ALZ shell where you can type code line by line.
+## CLI
 
 ```
-alz › name = "Sara"
-alz › print "Hello {name}"
-Hello Sara
-alz › exit
-```
-
----
-
-## Other commands
-
-```bash
-alz build myapp.alz    # compile to myapp.js
-alz check myapp.alz    # check for errors without running
-alz version            # show version
-alz help               # show help
+alz main.js          Run a file
+alz                  Open interactive shell (REPL)
+alz repl             Open interactive shell (REPL)
+alz build main.js    Compile to main.compiled.mjs
+alz check main.js    Check for syntax errors
+alz new my-app       Scaffold a new project
+alz version          Show version
+alz help             Show help
 ```
 
 ---
 
-## The language
+## Language Reference
 
 ### Variables
 
-```alz
-name   = "Sara"
-age    = 25
-price  = 9.99
+No `var`, `let`, or `const`. Just assign.
+
+```js
+name = "Sarg"
+age  = 23
 active = true
-empty  = null
+score = 98.5
 ```
 
-### Output
+---
 
-```alz
-print "Hello"
-print "Hello {name}"
-print "Name: {name}, Age: {age}"
-print
+### String Interpolation
+
+Use `{variable}` inside any string.
+
+```js
+name = "Sarg"
+print "Hello, {name}!"
+print "Age: {age}, Score: {score}"
 ```
+
+---
 
 ### Input
 
-```alz
-name = ask "What is your name? "
-print "Hello {name}"
+```js
+name = ask "Enter your name: "
+print "Hello, {name}!"
 ```
+
+---
 
 ### Conditions
 
-```alz
-if age > 18:
+```js
+age = 20
+
+if age >= 18:
     print "Adult"
-else if age == 18:
-    print "Just 18"
+else if age == 16:
+    print "Almost there"
 else:
     print "Minor"
 ```
 
-```alz
-if name is "Sara":
-    print "Found her"
+Use `is` and `isnt` as readable alternatives to `==` and `!=`:
 
-if name isnt "Bob":
-    print "Not Bob"
+```js
+if status is "active":
+    print "Online"
+
+if role isnt "admin":
+    print "Access denied"
 ```
+
+---
 
 ### Loops
 
-```alz
-repeat 5:
-    print "Hello"
+**Repeat n times:**
 
+```js
 repeat 5 as i:
     print "Step {i}"
-
-each item in items:
-    print item
-
-repeat until score > 100:
-    score = score + 10
 ```
+
+**Loop over a list:**
+
+```js
+fruits = ["apple", "mango", "grape"]
+each fruit in fruits:
+    print "Fruit: {fruit}"
+```
+
+**Loop over object entries:**
+
+```js
+user = { name: "Sarg", role: "admin" }
+each key, val in user:
+    print "{key}: {val}"
+```
+
+**Repeat until:**
+
+```js
+score = 0
+repeat until score >= 100:
+    score = score + 10
+print "Final score: {score}"
+```
+
+---
 
 ### Functions
 
-```alz
+```js
 define greet(name):
-    print "Hello {name}"
+    return "Hello, {name}!"
 
 define add(a, b):
     return a + b
 
-greet("World")
-result = add(10, 5)
-print result
+print greet("Sarg")
+print add(10, 20)
 ```
 
-### Lists
+---
 
-```alz
-fruits = ["apple", "mango", "banana"]
-fruits.add("grape")
-fruits.remove("mango")
-fruits.sort()
-print fruits.length
-print fruits.has("apple")
-```
+### Error Handling
 
-### Objects
-
-```alz
-user = { name: "Sara", age: 25 }
-print user.name
-user.age = 26
-```
-
-### Math
-
-```alz
-x = round(3.7)
-x = floor(9.9)
-x = sqrt(16)
-x = abs(-5)
-x = max(3, 7)
-x = min(3, 7)
-x = power(2, 8)
-x = random()
-```
-
-### Files
-
-```alz
-content = read "notes.txt"
-write "notes.txt" "Hello World"
-add to "notes.txt" "New line"
-delete "notes.txt"
-exists = file exists "notes.txt"
-```
-
-### HTTP
-
-```alz
-data = fetch "https://api.example.com/users"
-print data
-```
-
-### Web server
-
-```alz
-serve on 3000:
-    route "/":
-        respond "Hello World"
-
-    route "/greet" method="POST":
-        name = request.name
-        respond "Hello {name}"
-```
-
-### Database
-
-No SQL. No setup. Just works.
-
-```alz
-db.save("users", { name: "Sara", age: 25 })
-all    = db.all("users")
-one    = db.find("users", { name: "Sara" })
-db.update("users", { name: "Sara" }, { age: 26 })
-db.remove("users", { name: "Sara" })
-```
-
-Data is stored in `.alzdata/` folder as JSON files.
-
-### Error handling
-
-```alz
+```js
 try:
-    data = fetch "https://api.example.com"
+    data = fetch "https://api.example.com/users"
     print data
 catch err:
     print "Failed: {err}"
 ```
 
-### Comments
+---
 
-```alz
-// single line
-# single line
-/* multi
-   line */
+### Math
+
+```js
+print round(3.7)       // 4
+print floor(9.9)       // 9
+print ceil(1.1)        // 2
+print sqrt(16)         // 4
+print power(2, 10)     // 1024
+print abs(-42)         // 42
+print min(3, 7)        // 3
+print max(3, 7)        // 7
+print random()         // 0.0–1.0
 ```
 
 ---
 
-## How it works
+### Hashing & Encoding
 
-```
-your .alz file
-      ↓
-   Lexer        reads your code, produces tokens
-      ↓
-   Parser       turns tokens into a tree (AST)
-      ↓
-   Codegen      converts the tree to JavaScript
-      ↓
-   Node.js      runs the JavaScript
+```js
+h = hash "sha256" "hello"
+print h
+
+encoded = encode "base64" "AlzScript"
+decoded = decode "base64" encoded
+print decoded
 ```
 
-You never see the JavaScript. You just write ALZ.
+---
+
+### Pretty Print
+
+Format any object or array as readable JSON:
+
+```js
+user = { name: "Sarg", age: 23, role: "admin" }
+print pretty(user)
+```
+
+Output:
+```json
+{
+  "name": "Sarg",
+  "age": 23,
+  "role": "admin"
+}
+```
+
+---
+
+### File System
+
+```js
+write "notes.txt" "Hello from AlzScript"
+content = read "notes.txt"
+print content
+
+add to "notes.txt" "\nSecond line"
+
+exists = file exists "notes.txt"
+print exists
+
+delete "notes.txt"
+```
+
+---
+
+### Shell Commands
+
+```js
+result = run "echo Hello from shell"
+print result
+
+files = run "ls -la"
+print files
+```
+
+---
+
+### HTTP Requests
+
+```js
+// GET
+data = fetch "https://api.example.com/users"
+print pretty(data)
+
+// POST
+result = post "https://api.example.com/login" with { username: "sarg", password: "secret" }
+print result.token
+```
+
+---
+
+### Built-in Database
+
+AlzScript includes a zero-config file-based database. No setup, no SQL, no external services.
+
+```js
+// Save a record
+db.save("users", { name: "Sarg", role: "admin", age: 23 })
+
+// Load all records
+all = db.all("users")
+each user in all:
+    print "{user.name} | {user.role}"
+
+// Find one record
+user = db.find("users", { name: "Sarg" })
+print "Found: {user.name}"
+
+// Query with conditions
+admins = db.where("users", { role: "admin" })
+
+// Count records
+total = db.count("users")
+print "Total: {total}"
+
+// First / Last
+first = db.first("users")
+last  = db.last("users")
+
+// Update
+db.update("users", { name: "Sarg" }, { age: 24 })
+
+// Remove
+db.remove("users", { name: "Sarg" })
+
+// Clear all records (keep table)
+db.clear("users")
+
+// Drop table entirely
+db.drop("users")
+```
+
+Records are automatically assigned a unique `_id` and a timestamp `_at`.
+
+Data is stored in a local `.alzdata/` directory as JSON files.
+
+---
+
+### MySQL
+
+```js
+db.mysql.connect({
+    host: "localhost",
+    user: "root",
+    password: "secret",
+    database: "myapp"
+})
+
+rows = db.mysql.query("SELECT * FROM users WHERE active = 1")
+each row in rows:
+    print "{row.name} | {row.email}"
+
+db.mysql.close()
+```
+
+---
+
+### HTML Templates
+
+AlzScript includes a built-in template engine for rendering HTML.
+
+**Template file — `views/index.html`:**
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>
+show title
+  </title>
+</head>
+<body>
+  <h1>Welcome,
+show user.name
+  </h1>
+
+  <ul>
+  each product in products
+    <li>
+show product.name
+    </li>
+  end
+  </ul>
+
+  if user.role == "admin"
+    <p><strong>Admin Panel</strong></p>
+  end
+
+  -- this is a comment, it will not appear in output --
+
+</body>
+</html>
+```
+
+**AlzScript file:**
+
+```js
+data = {
+    title: "My Store",
+    user: { name: "Sarg", role: "admin" },
+    products: [
+        { name: "AlzScript Book" },
+        { name: "ALZ T-Shirt" }
+    ]
+}
+
+html = render "views/index.html" with data
+print html
+```
+
+**Template syntax:**
+
+| Syntax | Description |
+|---|---|
+| `show variable` | Output a variable (HTML-escaped) |
+| `show! variable` | Output raw/unescaped HTML |
+| `show expr + 1` | Output an expression |
+| `if condition` / `end` | Conditional block |
+| `each item in list` / `end` | Loop block |
+| `include "file.html"` | Include a partial |
+| `extends "layout.html"` | Use a layout |
+| `block name` / `endblock` | Named content block |
+| `-- comment --` | Comment (stripped from output) |
+
+---
+
+### Web Server
+
+```js
+serve on 3000:
+    route "/":
+        respond "Hello, World!"
+
+    route "/user/:id":
+        id = request.params.id
+        user = db.find("users", { _id: id })
+        if user is null:
+            respond 404 "User not found"
+        respond pretty(user)
+
+    route "/login" method="POST":
+        body = request.body
+        user = db.find("users", { name: body.name })
+        if user is null:
+            respond 401 "Invalid credentials"
+        respond { token: "abc123", user: user.name }
+```
+
+---
+
+## Project Structure
+
+Use `alz new` to scaffold a new project:
+
+```bash
+alz new my-app
+cd my-app
+alz main.js
+```
+
+Generated structure:
+
+```
+my-app/
+├── main.js        ← entry point
+├── views/         ← HTML templates
+├── public/        ← static files
+├── .alzdata/      ← local database (auto-created)
+└── package.json
+```
+
+---
+
+## What's New in v1.0.2
+
+- **ESM fix** — resolved `_alzCR` and `_alzdb` duplicate declaration crash on Node.js v20+
+- **`.js` as primary extension** — AlzScript files use `.js`, no `.alz` extension
+- **`render` as expression** — `html = render "view.html" with data` now works in assignments
+- **REPL variable persistence** — variables defined in one REPL line are available in subsequent lines
+- **Template engine** — `render`, `show`, `each`, `if`, `include`, `extends`, `block`
+- **Database expanded** — added `db.where()`, `db.count()`, `db.first()`, `db.last()`, `db.clear()`, `db.drop()`
+- **MySQL support** — `db.mysql.connect()`, `db.mysql.query()`, `db.mysql.close()`
+- **New built-ins** — `hash`, `encode`, `decode`, `run`, `pretty()`
 
 ---
 
 ## License
 
-MIT — ALZ TECH
+MIT — © ALZ TECH
